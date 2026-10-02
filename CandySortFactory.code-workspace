@@ -1,0 +1,115 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.eol": "\n",
+    "files.encoding": "utf8",
+    "editor.tabSize": 2,
+    "editor.wordWrap": "off",
+    "editor.formatOnSave": false,
+    "html.format.enable": false,
+    "files.exclude": {
+      "**/node_modules": true
+    },
+    "search.exclude": {
+      "dist/**": true,
+      "vendor/**": true
+    },
+    "files.watcherExclude": {
+      "**/dist/**": true
+    },
+    "editor.largeFileOptimizations": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "liveServer.settings.root": "/dist",
+    "liveServer.settings.file": "candy_sort_factory.html",
+    "chat.useAgentsMdFile": true
+  },
+  "extensions": {
+    "recommendations": [
+      "ritwickdey.liveserver",
+      "eamodio.gitlens",
+      "mhutchie.git-graph",
+      "editorconfig.editorconfig"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build game",
+        "type": "shell",
+        "command": "node scripts/build.mjs",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "shared",
+          "clear": true
+        }
+      },
+      {
+        "label": "Build & open in browser",
+        "type": "shell",
+        "dependsOn": "Build game",
+        "windows": {
+          "command": "start \"\" \"${workspaceFolder}\\dist\\candy_sort_factory.html\""
+        },
+        "osx": {
+          "command": "open \"${workspaceFolder}/dist/candy_sort_factory.html\""
+        },
+        "linux": {
+          "command": "xdg-open \"${workspaceFolder}/dist/candy_sort_factory.html\""
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Smoke test (all levels, both themes)",
+        "type": "shell",
+        "command": "npm test",
+        "dependsOn": "Build game",
+        "group": "test",
+        "problemMatcher": []
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Play (Edge, debug)",
+        "type": "msedge",
+        "request": "launch",
+        "preLaunchTask": "Build game",
+        "file": "${workspaceFolder}/dist/candy_sort_factory.html"
+      },
+      {
+        "name": "Play (Chrome, debug)",
+        "type": "chrome",
+        "request": "launch",
+        "preLaunchTask": "Build game",
+        "file": "${workspaceFolder}/dist/candy_sort_factory.html"
+      },
+      {
+        "name": "Play Factory theme only (Edge)",
+        "type": "msedge",
+        "request": "launch",
+        "preLaunchTask": "Build game",
+        "file": "${workspaceFolder}/dist/factory.html"
+      },
+      {
+        "name": "Play Candy theme only (Edge)",
+        "type": "msedge",
+        "request": "launch",
+        "preLaunchTask": "Build game",
+        "file": "${workspaceFolder}/dist/candy.html"
+      }
+    ]
+  }
+}

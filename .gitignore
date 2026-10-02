@@ -1,0 +1,7 @@
+# build output (regenerate with: npm run build)
+dist/
+node_modules/
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log

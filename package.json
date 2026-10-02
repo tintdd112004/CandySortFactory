@@ -1,0 +1,12 @@
+{
+  "name": "candy-sort-factory",
+  "version": "0.38.0",
+  "private": true,
+  "description": "3D low-poly portrait puzzle prototype: sort candies into boxes on a factory conveyor (Three.js, single-file HTML build).",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node tests/smoke.mjs"
+  },
+  "license": "UNLICENSED"
+}

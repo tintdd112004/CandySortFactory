@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Candy Sort Factory</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#15171b;font-family:"Trebuchet MS",system-ui,sans-serif;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+#fr{position:fixed;inset:0;width:100%;height:100%;border:0;display:block}
+#menu{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,9,11,.66);z-index:5;padding:20px}
+#menu.show{display:flex}
+.mc{width:100%;max-width:340px;background:linear-gradient(#343a42,#262a30);border:3px solid #6d7782;border-radius:16px;padding:20px 16px 16px;color:#e6eaee;text-align:center;box-shadow:0 8px 0 rgba(0,0,0,.4);position:relative}
+.mc h2{font-size:22px;margin-bottom:4px}.mc p{font-size:13px;color:#b9c0c8;margin-bottom:14px}
+.x{position:absolute;top:8px;right:10px;width:30px;height:30px;border-radius:8px;border:0;background:#4a525d;color:#fff;font-size:16px;cursor:pointer}
+.tiles{display:flex;flex-direction:column;gap:8px;max-height:72vh;overflow:auto}
+.tile{display:flex;gap:10px;align-items:center;text-align:left;padding:7px 9px;border-radius:12px;border:2px solid #58606b;background:#2a2e35;cursor:pointer;color:#e6eaee;font:inherit}
+.tile:active{transform:translateY(2px)}
+.tile.cur{border-color:#5fe3ff;box-shadow:0 0 0 3px rgba(95,227,255,.25)}
+.sw{flex:none;width:70px;height:52px;border-radius:9px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.sw i{position:absolute;display:block}
+.tile b{display:block;font-size:15px;margin-bottom:2px}.tile span{font-size:11.5px;color:#b9c0c8;line-height:1.3}
+.tag{display:inline-block;margin-left:6px;font-size:10px;background:#3d82d4;color:#fff;border-radius:6px;padding:1px 6px;vertical-align:middle}
+</style></head><body>
+<iframe id="fr" title="Candy Sort Factory" allow="autoplay"></iframe>
+<div id="menu"><div class="mc"><button class="x" id="mx">✕</button>
+  <h2>Choose a theme</h2><p>Same gameplay, different look.</p>
+  <div class="tiles">
+    <button class="tile" data-t="industrial"><div class="sw" style="background:#8a8f96">
+        <i style="left:0;right:0;top:0;height:24px;background:#5c6672"></i><i style="left:8px;top:30px;width:30px;height:24px;background:#c69a63;border:2px solid #8a6a3f"></i>
+        <i style="left:46px;top:36px;width:30px;height:8px;background:#2b2d31"></i><i style="left:46px;top:46px;width:30px;height:6px;background:#2f6db5"></i></div>
+      <div><b>🏭 Factory <em class="tag">Default</em></b><span>Steel, concrete, rubber belts, taped cardboard boxes, trucks.</span></div></button>
+    <button class="tile" data-t="candy"><div class="sw" style="background:repeating-conic-gradient(#e6b5c8 0 25%,#b5dccb 0 50%) 0 0/24px 24px">
+        <i style="left:0;right:0;top:0;height:22px;background:#5a3220"></i><i style="left:8px;top:30px;width:30px;height:24px;background:#ec4a63;border:2px solid #fff"></i>
+        <i style="left:46px;top:34px;width:30px;height:20px;background:repeating-linear-gradient(45deg,#fff8f3 0 5px,#ef4f6e 5px 10px)"></i></div>
+      <div><b>🍬 Candy Workshop</b><span>Candy jar, chocolate river, wafer belts, gift boxes with bows, candy train.</span></div></button>
+  </div></div></div>
+<script type="text/plain" id="three-src">/*THREE_SRC*/</script>
+<script>
+const TPL={industrial:/*TPL_INDUSTRIAL*/,candy:/*TPL_CANDY*/};
+const fr=document.getElementById('fr'),menu=document.getElementById('menu'),THREE_SRC=document.getElementById('three-src').textContent;
+let cur='industrial',resume={level:0,play:false};
+function load(theme,st){cur=theme;const doc=TPL[theme].replace('/*THREE*/',()=>THREE_SRC)
+    .replace('<script>',()=>'<script>window.__CSF=1;window.__START='+JSON.stringify(st||null)+';<\/script><script>');
+  fr.srcdoc=doc;fr.onload=()=>{try{fr.contentWindow.focus();}catch(e){}};
+  document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('cur',t.dataset.t===cur));}
+window.addEventListener('message',e=>{const d=e.data;if(!d||d.csf!=='menu')return;resume={level:d.level||0,play:!!d.playing};
+  document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('cur',t.dataset.t===cur));menu.classList.add('show');});
+document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>{menu.classList.remove('show');if(t.dataset.t===cur)return;load(t.dataset.t,resume.play||resume.level?resume:null);});
+document.getElementById('mx').onclick=()=>menu.classList.remove('show');
+load('industrial',null);
+</script></body></html>
